@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_RMA" targetNamespace="http://bpmn.io/schema/bpmn">
+<bpmn:collaboration id="Collab_RMA">
+<bpmn:participant id="P_cli" name="Cliente" processRef="Proc_cli"/>
+<bpmn:participant id="P_multi" name="MULTCABOS (RMA)" processRef="Proc_multi"/>
+<bpmn:messageFlow id="MF1" sourceRef="T_solicitar" targetRef="M_start"/>
+<bpmn:messageFlow id="MF2" sourceRef="T_enviar" targetRef="T_receber"/>
+<bpmn:messageFlow id="MF3" sourceRef="T_notificar" targetRef="T_decisao"/>
+</bpmn:collaboration>
+<bpmn:process id="Proc_cli" isExecutable="false">
+<bpmn:startEvent id="S_cli" name="Defeito identificado"/>
+<bpmn:task id="T_solicitar" name="Solicitar RMA"/>
+<bpmn:task id="T_enviar" name="Enviar produto"/>
+<bpmn:task id="T_decisao" name="Receber decisão"/>
+<bpmn:endEvent id="E_cli" name="Atendimento encerrado"/>
+<bpmn:sequenceFlow id="F1" sourceRef="S_cli" targetRef="T_solicitar"/>
+<bpmn:sequenceFlow id="F2" sourceRef="T_solicitar" targetRef="T_enviar"/>
+<bpmn:sequenceFlow id="F3" sourceRef="T_enviar" targetRef="T_decisao"/>
+<bpmn:sequenceFlow id="F4" sourceRef="T_decisao" targetRef="E_cli"/>
+</bpmn:process>
+<bpmn:process id="Proc_multi" isExecutable="false">
+<bpmn:laneSet id="LaneSet_multi">
+<bpmn:lane id="L_at" name="Atendimento">
+<bpmn:flowNodeRef>M_start</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_registrar</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_receber</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_triar</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>G_defeito</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_recusar</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_emitir</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_notificar</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>E_fim</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="L_lab" name="Laboratório">
+<bpmn:flowNodeRef>T_analisar</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>G_fork</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>T_laudo</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>G_join</bpmn:flowNodeRef>
+</bpmn:lane>
+</bpmn:laneSet>
+<bpmn:startEvent id="M_start" name="Solicitação recebida"><bpmn:messageEventDefinition id="M_start_med"/></bpmn:startEvent>
+<bpmn:task id="T_registrar" name="Registrar chamado"/>
+<bpmn:task id="T_receber" name="Receber produto"/>
+<bpmn:task id="T_triar" name="Triar produto"/>
+<bpmn:exclusiveGateway id="G_defeito" name="Defeito confirmado?"/>
+<bpmn:task id="T_recusar" name="Recusar garantia"/>
+<bpmn:task id="T_emitir" name="Emitir nota de devolução"/>
+<bpmn:task id="T_notificar" name="Notificar cliente"/>
+<bpmn:endEvent id="E_fim" name="RMA concluído"/>
+<bpmn:task id="T_analisar" name="Analisar defeito"/>
+<bpmn:parallelGateway id="G_fork"/>
+<bpmn:task id="T_laudo" name="Registrar laudo"/>
+<bpmn:parallelGateway id="G_join"/>
+<bpmn:sequenceFlow id="F5" sourceRef="M_start" targetRef="T_registrar"/>
+<bpmn:sequenceFlow id="F6" sourceRef="T_registrar" targetRef="T_receber"/>
+<bpmn:sequenceFlow id="F7" sourceRef="T_receber" targetRef="T_triar"/>
+<bpmn:sequenceFlow id="F8" sourceRef="T_triar" targetRef="G_defeito"/>
+<bpmn:sequenceFlow id="F9" sourceRef="G_defeito" targetRef="T_analisar"/>
+<bpmn:sequenceFlow id="F10" sourceRef="G_defeito" targetRef="T_recusar"/>
+<bpmn:sequenceFlow id="F11" sourceRef="T_analisar" targetRef="G_fork"/>
+<bpmn:sequenceFlow id="F12" sourceRef="G_fork" targetRef="T_emitir"/>
+<bpmn:sequenceFlow id="F13" sourceRef="G_fork" targetRef="T_laudo"/>
+<bpmn:sequenceFlow id="F14" sourceRef="T_emitir" targetRef="G_join"/>
+<bpmn:sequenceFlow id="F15" sourceRef="T_laudo" targetRef="G_join"/>
+<bpmn:sequenceFlow id="F16" sourceRef="G_join" targetRef="T_notificar"/>
+<bpmn:sequenceFlow id="F17" sourceRef="T_recusar" targetRef="T_notificar"/>
+<bpmn:sequenceFlow id="F18" sourceRef="T_notificar" targetRef="E_fim"/>
+</bpmn:process>
+<bpmndi:BPMNDiagram id="Diagram_RMA"><bpmndi:BPMNPlane id="Plane_RMA" bpmnElement="Collab_RMA">
+<bpmndi:BPMNShape id="P_cli_di" bpmnElement="P_cli" isHorizontal="true"><dc:Bounds x="160" y="60" width="1460" height="150"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_multi_di" bpmnElement="P_multi" isHorizontal="true"><dc:Bounds x="160" y="260" width="1460" height="380"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="L_at_di" bpmnElement="L_at" isHorizontal="true"><dc:Bounds x="190" y="260" width="1430" height="190"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="L_lab_di" bpmnElement="L_lab" isHorizontal="true"><dc:Bounds x="190" y="450" width="1430" height="190"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="S_cli_di" bpmnElement="S_cli"><dc:Bounds x="200" y="127" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_solicitar_di" bpmnElement="T_solicitar"><dc:Bounds x="300" y="105" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_enviar_di" bpmnElement="T_enviar"><dc:Bounds x="460" y="105" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_decisao_di" bpmnElement="T_decisao"><dc:Bounds x="1380" y="105" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="E_cli_di" bpmnElement="E_cli"><dc:Bounds x="1540" y="127" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="M_start_di" bpmnElement="M_start"><dc:Bounds x="230" y="337" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_registrar_di" bpmnElement="T_registrar"><dc:Bounds x="300" y="315" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_receber_di" bpmnElement="T_receber"><dc:Bounds x="460" y="315" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_triar_di" bpmnElement="T_triar"><dc:Bounds x="620" y="315" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="G_defeito_di" bpmnElement="G_defeito" isMarkerVisible="true"><dc:Bounds x="790" y="330" width="50" height="50"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_recusar_di" bpmnElement="T_recusar"><dc:Bounds x="880" y="270" width="120" height="60"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_emitir_di" bpmnElement="T_emitir"><dc:Bounds x="1120" y="315" width="130" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_notificar_di" bpmnElement="T_notificar"><dc:Bounds x="1380" y="315" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="E_fim_di" bpmnElement="E_fim"><dc:Bounds x="1540" y="337" width="36" height="36"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_analisar_di" bpmnElement="T_analisar"><dc:Bounds x="880" y="505" width="120" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="G_fork_di" bpmnElement="G_fork" isMarkerVisible="true"><dc:Bounds x="1030" y="520" width="50" height="50"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="T_laudo_di" bpmnElement="T_laudo"><dc:Bounds x="1120" y="505" width="130" height="80"/></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="G_join_di" bpmnElement="G_join" isMarkerVisible="true"><dc:Bounds x="1290" y="520" width="50" height="50"/></bpmndi:BPMNShape>
+<bpmndi:BPMNEdge id="F1_di" bpmnElement="F1"><di:waypoint x="236" y="145"/><di:waypoint x="300" y="145"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F2_di" bpmnElement="F2"><di:waypoint x="420" y="145"/><di:waypoint x="460" y="145"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F3_di" bpmnElement="F3"><di:waypoint x="580" y="145"/><di:waypoint x="1380" y="145"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F4_di" bpmnElement="F4"><di:waypoint x="1500" y="145"/><di:waypoint x="1540" y="145"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F5_di" bpmnElement="F5"><di:waypoint x="266" y="355"/><di:waypoint x="300" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F6_di" bpmnElement="F6"><di:waypoint x="420" y="355"/><di:waypoint x="460" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F7_di" bpmnElement="F7"><di:waypoint x="580" y="355"/><di:waypoint x="620" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F8_di" bpmnElement="F8"><di:waypoint x="740" y="355"/><di:waypoint x="790" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F9_di" bpmnElement="F9"><di:waypoint x="815" y="380"/><di:waypoint x="815" y="545"/><di:waypoint x="880" y="545"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F10_di" bpmnElement="F10"><di:waypoint x="840" y="355"/><di:waypoint x="860" y="355"/><di:waypoint x="860" y="300"/><di:waypoint x="880" y="300"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F11_di" bpmnElement="F11"><di:waypoint x="1000" y="545"/><di:waypoint x="1030" y="545"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F12_di" bpmnElement="F12"><di:waypoint x="1055" y="520"/><di:waypoint x="1055" y="355"/><di:waypoint x="1120" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F13_di" bpmnElement="F13"><di:waypoint x="1080" y="545"/><di:waypoint x="1120" y="545"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F14_di" bpmnElement="F14"><di:waypoint x="1250" y="355"/><di:waypoint x="1315" y="355"/><di:waypoint x="1315" y="520"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F15_di" bpmnElement="F15"><di:waypoint x="1250" y="545"/><di:waypoint x="1290" y="545"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F16_di" bpmnElement="F16"><di:waypoint x="1340" y="545"/><di:waypoint x="1440" y="545"/><di:waypoint x="1440" y="395"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F17_di" bpmnElement="F17"><di:waypoint x="1000" y="300"/><di:waypoint x="1350" y="300"/><di:waypoint x="1350" y="355"/><di:waypoint x="1380" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="F18_di" bpmnElement="F18"><di:waypoint x="1500" y="355"/><di:waypoint x="1540" y="355"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="MF1_di" bpmnElement="MF1"><di:waypoint x="360" y="185"/><di:waypoint x="360" y="225"/><di:waypoint x="248" y="225"/><di:waypoint x="248" y="337"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="MF2_di" bpmnElement="MF2"><di:waypoint x="520" y="185"/><di:waypoint x="520" y="315"/></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="MF3_di" bpmnElement="MF3"><di:waypoint x="1440" y="315"/><di:waypoint x="1440" y="185"/></bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>
