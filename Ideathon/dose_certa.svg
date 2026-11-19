@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+<rect width="900" height="420" fill="#FFFFFF"/>
+<rect x="250" y="30" width="400" height="360" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="450.0" y="56" text-anchor="middle" font-size="15" font-weight="bold" font-family="Helvetica, Arial, sans-serif">Dose Certa</text>
+<line x1="120" y1="100" x2="335" y2="146.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="120" y1="280" x2="335" y2="146.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="120" y1="280" x2="335" y2="296.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="120" y1="100" x2="335" y2="296.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="715" y1="205.0" x2="565" y2="146.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="715" y1="205.0" x2="565" y2="296.0" stroke="#000000" stroke-width="1.5"/>
+<ellipse cx="450.0" cy="146.0" rx="115.0" ry="36.0" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="450.0" y="151.0" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">Cadastrar horários dos remédios</text>
+<ellipse cx="450.0" cy="296.0" rx="115.0" ry="36.0" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="450.0" y="301.0" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">Confirmar dose</text>
+<g fill="none" stroke="#000000" stroke-width="1.5"><circle cx="105" cy="78" r="8" fill="#FFFFFF"/><line x1="105" y1="86" x2="105" y2="110"/><line x1="90" y1="94" x2="120" y2="94"/><line x1="105" y1="110" x2="90" y2="130"/><line x1="105" y1="110" x2="120" y2="130"/></g>
+<text x="105" y="150" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">Familiar</text>
+<g fill="none" stroke="#000000" stroke-width="1.5"><circle cx="105" cy="258" r="8" fill="#FFFFFF"/><line x1="105" y1="266" x2="105" y2="290"/><line x1="90" y1="274" x2="120" y2="274"/><line x1="105" y1="290" x2="90" y2="310"/><line x1="105" y1="290" x2="120" y2="310"/></g>
+<text x="105" y="330" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">Paciente</text>
+<rect x="715" y="175" width="160" height="60" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="795.0" y="200" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">«dispositivo»</text>
+<text x="795.0" y="218" text-anchor="middle" font-size="13" font-family="Helvetica, Arial, sans-serif">Organizador de remédios</text>
+</svg>
